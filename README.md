@@ -38,24 +38,24 @@ devops/
 
 ## 快速使用
 
-### 1. 全局生命周期管理 (项目根目录)
+### 1. 按具体业务项目管理 (推荐)
+
+在 `projects.mk` 中为项目配置专属依赖组件（如 `PROJECT_aipica := pg redis`）：
 
 ```bash
-# 查看所有可用命令和组件状态
-make help
+# 启动指定项目依赖的全部组件（等待就绪/健康检查通过）
+make start aipica
 
-# 启动 dev 项目所需的全部组件（等待就绪/健康检查通过）
-make start dev
+# 查看项目依赖组件的运行状态
+make status aipica
 
-# 查看全部或指定组件状态
-make status
-make status dev
-
-# 停止全套组件
-make stop dev
+# 停止项目关联的全部组件
+make stop aipica
 ```
 
-### 2. 单个组件管理
+### 2. 按单个基础组件管理
+
+当只需要调试或使用某一特定组件时：
 
 ```bash
 # 启动单独组件
@@ -63,30 +63,25 @@ make start pg
 make start redis
 make start livekit
 
-# 查看最近 100 行日志
+# 查看状态与最近 100 行日志
+make status
 make logs pg
 make logs redis
 
-# 重启组件
+# 重启或停止单独组件
 make restart livekit
-
-# 停止单独组件
 make stop redis
 ```
 
 ---
 
-## 数据持久化与备份（防重装系统数据丢失）
+## 数据持久化与备份
 
-所有组件数据均通过 Bind Mount 挂载到宿主机本地物理目录（如 `pg/data/`、`redis/data/`），**不再依赖 Docker 隐藏的内部卷**。
+所有组件数据均通过 Bind Mount 挂载到宿主机本地物理目录（如 `pg/data/`、`redis/data/`），数据独立于容器生命周期存储。
 
-### 重装系统注意事项
-* **重装系统前**：只需将整个 `devops` 文件夹（或其中的 `pg/data`、`redis/data`）拷贝到外置移动硬盘或 U 盘。
-* **重装系统后**：拷回原目录，执行 `make start dev` 即可无缝继承原有数据库与缓存。
+### PostgreSQL 备份与还原
 
-### PostgreSQL 逻辑备份（双重保险）
-
-进入 `pg/` 目录可使用专有的备份命令：
+进入 `pg/` 目录可使用专有的备份管理命令：
 
 ```bash
 cd pg

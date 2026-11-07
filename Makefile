@@ -38,7 +38,7 @@ $(error Usage: make help)
 endif
 else
 ifeq ($(filter $(ACTION),status help),)
-$(error Specify a component or project: make $(ACTION) dev)
+$(error Specify a component or project: make $(ACTION) <组件名或项目名>)
 endif
 endif
 
@@ -53,11 +53,13 @@ help:
 		'常用命令:' \
 		'  make                   显示帮助' \
 		'  make status            查看全部组件状态' \
-		'  make start dev         启动项目所需组件，等待运行或健康检查通过' \
-		'  make stop dev          停止项目所需组件' \
-		'  make status dev        查看项目所需组件状态' \
+		'  make status <项目名>    查看项目所需组件状态 (如 make status aipica)' \
 		'' \
-		'组件操作:' \
+		'按项目操作 (仅管理该项目依赖的组件):' \
+		'  make start <项目名>    启动该项目所需组件 (如 make start aipica)' \
+		'  make stop <项目名>     停止该项目所需组件' \
+		'' \
+		'按单个组件操作:' \
 		'  make start pg          启动 PostgreSQL' \
 		'  make stop redis        停止 Redis' \
 		'  make restart livekit   重启 LiveKit' \
