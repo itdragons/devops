@@ -80,7 +80,7 @@ help:
 $(ACTIONS):
 	@set -e; for component in $(SELECTED); do \
 		printf '== %s ==\n' "$$component"; \
-		docker compose -f "$(ROOT)$$component/compose.yaml" $(COMPOSE_$@); \
+		COMPOSE_IGNORE_ORPHANS=1 docker compose -f "$(ROOT)$$component/compose.yaml" $(COMPOSE_$@); \
 	done
 
 $(COMPONENTS) $(PROJECTS):

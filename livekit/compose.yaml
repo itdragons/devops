@@ -1,4 +1,4 @@
-name: livekit
+name: devops
 
 services:
   livekit:

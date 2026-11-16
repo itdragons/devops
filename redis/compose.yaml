@@ -1,4 +1,4 @@
-name: redis
+name: devops
 
 services:
   redis:
